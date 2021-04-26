@@ -1,6 +1,6 @@
 # ignore everything
 *
 
-# except this files
+# except these files
 !.gitignore
 !vimrc
