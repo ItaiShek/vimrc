@@ -108,6 +108,7 @@ vnoremap <leader>[ <esc>`>a]<esc>`<i[<esc>|	" wrap selected text with square par
 vnoremap <leader>{ <esc>`>a}<esc>`<i{<esc>|	" wrap selected text with curly parenthesis
 vnoremap <leader>r y<esc>:s/\v<c-r>"//g<left><left>|	" replace highlighted text
 vnoremap <leader>R y<esc>:%s/\v<c-r>"//g<left><left>|	" replace all instances of highlighted text
+vnoremap / y<esc>:/\v<c-r>"|	" search for highlighted string
 "}}}
 "}}}
 
