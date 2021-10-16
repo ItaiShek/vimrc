@@ -12,6 +12,7 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'Valloric/YouCompleteMe'	 " autocomplete for programming languages
+Plugin 'instant-markdown/vim-instant-markdown', {'rtp': 'after'}	" view markdown in browser
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -30,7 +31,7 @@ filetype plugin indent on    " required
 
 " end of Vundle ---}}}
 
-
+set foldmethod=indent
 " Kite autocomplete for python ---{{{
 " enable kite for all supported languages:
 "let g:kite_supported_languages = ['*']
@@ -86,10 +87,10 @@ nnoremap L <end>|		" go to the end of line
 nnoremap <leader>pb :execute "leftabove vsplit " . bufname("#")<cr>|	" open the previous buffer
 nnoremap / /\v|		" all searches are verymagic
 nnoremap <leader>sh :nohlsearch<cr>|	" stop highlight from last search
-nnoremap <leader>g :silent execute "grep! -R " . shellescape(expand("<cWORD>")) . " ."<cr>:copen 8<cr>|	" grep word under the cursor and open quickfix window
+"nnoremap <leader>g :silent execute "grep! -R " . shellescape(expand("<cWORD>")) . " ."<cr>:copen 8<cr>|	" grep word under the cursor and open quickfix window
 nnoremap <leader>nn :cnext<cr>|	" next result from grep
 nnoremap <leader>pp :cprevious<cr>|	" previous result from grep
-nnoremap <leader>cc :cclose<cr>|	" close error window
+"nnoremap <leader>cc :cclose<cr>|	" close error window
 "}}}
 
 " Mapping - Insert Mode -{{{
@@ -124,9 +125,9 @@ onoremap il{ :<c-u>normal! F}vi}<cr>|	" select the text inside the last curly pa
 
 " Abbreviations ---{{{
 " Input mode:
-iabbrev ccopy (c) <esc>:r! date "+\%Y"<cr>i<bs><esc>ea MY NAME|	" copyright
-iabbrev gitprof https://github.com/MY_GITHUB_PROFILE|	" github profile
-iabbrev workmail MY_EMAIL|	" work email
+iabbrev ccopy (c) <esc>:r! date "+\%Y"<cr>i<bs><esc>ea MY_NAME|	" copyright
+iabbrev gitprof https://github.com/MY_GITHUB_PAGE|	" github profile
+iabbrev workmail MY_EMAIL@EMAIL.com|	" work email
 "}}}
 
 " Filetype specific settings ---{{{
@@ -136,14 +137,14 @@ augroup filetype_py
 	autocmd FileType python setlocal foldmethod=indent|	" set fold method to indent in python files
 	autocmd FileType python setlocal foldlevel=99|		" all the folds are open when opening a python file 
 	autocmd FileType python nnoremap <buffer> <localleader>c I# <esc>|	" add comment to python file line in normal mode
+	autocmd FileType python iabbrev shebang #!/usr/bin/env python3|" shebang line
 augroup END
 "}}}
 
 " for c programs ---{{{
 augroup filetype_c
 	autocmd!
-	autocmd FileType c execute "normal! :setlocal cindent\<cr>"|	" indentation
-	autocmd FileType c setlocal foldmethod=indent|	" set fold method to indent in c files
+	autocmd FileType c setlocal foldmethod=syntax|	" set fold method to indent in c files
 	autocmd FileType c setlocal foldlevel=99|	" all the folds are open when opening a c file 
 	" abbreviations
 	autocmd FileType c iabbrev<buffer> iff if()<cr>{<cr>}<up><up><right><right><c-r>=Eatchar('\s')<cr>|	" if statement
@@ -155,10 +156,9 @@ augroup filetype_c
 	autocmd FileType c iabbrev <buffer> #i #include <><left><c-r>=Eatchar('\s')<cr>|	" include
 	autocmd FileType c iabbrev <buffer> doo do<cr>{<cr>}<cr>while();<left><left><c-r>=Eatchar('\s')<cr>|	" do-while loop
 	" mapping
-	autocmd FileType c nnoremap <buffer> <localleader>c I// <esc>|	" add comment to c file line in normal mode
+	autocmd FileType c noremap <buffer> <localleader>c I// <esc>|	" add comment to c file line in normal mode
 	autocmd FileType c vnoremap <buffer> <localleader>c <esc>`>a*/<esc>`<i/*<esc>|	" comment the highlighted text
 	autocmd FileType c nnoremap <buffer> <leader>w :match Error /\v\s+$/<cr>|	" highlight trailing spaces
-
 augroup END
 "}}}
 
@@ -168,6 +168,8 @@ augroup filetype_sh
 	autocmd FileType sh setlocal foldmethod=indent|	" set fold method to indent on bash script files
 	autocmd FileType sh setlocal foldlevel=99|	" all the folds are open when opening a bash script file 
 	autocmd FileType sh nnoremap <buffer> <localleader>c I# <esc>|	" add comment to bash script file line in normal mode
+	" abbreviations
+	autocmd FileType sh iabbrev <buffer> shebang #!/bin/bash|	" shebang line
 augroup END
 	
 "}}}
